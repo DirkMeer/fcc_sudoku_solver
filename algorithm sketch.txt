@@ -1,0 +1,23 @@
+//phase 1//
+Have a loop that goes square by square. If it is solvable solve it, if not go to the next one. Solve only the ones logically solvable.
+
+for each square:
+    -Check if the current square is empty. (If not, no need to solve, move to next square)
+    -if it is empty it could be any number between 1 and 9 (put in an array).
+    -check all numbers in the current 3x3 grid already, and remove them from the array.
+    -check all numbers in the current 9 wide row, and remove those from the array if they are not already removed.
+    -check all numbers in the current column, remove them from the array of possible numbers for our square (if they aren't removed already).
+    -if you have more than 1 number left in the array, this square is currently unsolvable, leave it as a dot, and move to the next one.
+    -if you have only 1 number left, the value for this square can safely be set to the single remaining value. Move to the next square.
+
+When you looped through all the squares, go back and do it again. New squares have become solvable. When there are no more dots left you are done.
+
+
+//phase 2//
+If there are no squares that are easily solvable with only a single value left. In the entire sudoku puzzle (and it has not been solved in phase 1 obviously). Take whatever output you get from phase 1 and call phase 2.
+
+-Save the beginning state of phase 2 in a separate copy, you will return to this often to get a new copy for each try.
+-Calculate using the same algorithm as step number 1, except every time there is more than one number left in your possible solutions array randomly choose one of the options and use that one. Now all the rest of your calculations will be based on this number being correct.
+-Continue calculations, every time there is only 1 number left (based on previous assumptions) input that number. Every time there are more numbers left make a random guess.
+-This will not allow any invalid numbers to be input anywhere. If the algorithm manages to fill all the dots to numbers, you WILL have a valid solution.
+-Most likely on almost every try (you are brute forcing a random solution) you will fail. You will know you have failed because there will not be a possible number left for this square. Your array of possibilities calculating this square (using phase 1 algorithm) will go completely empty. When this happens, simply reset to the start of phase 2, make a new copy of the initial phase 2 state array and start calculating another random solution.
