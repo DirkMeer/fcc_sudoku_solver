@@ -28,6 +28,10 @@ module.exports = function (app) {
       //check if the value is valid//
       let valueRegex = new RegExp(/^[1-9]$/)
       if(!valueRegex.test(value)){ return res.json({ error: 'Invalid value' })}
+      //check if the value input is the same value already present in the puzzle at the same index
+      if(solver.checkIdentical(puzzle, coordinate[0], coordinate[1], value) === true){
+        return res.json( {valid: true })
+      }
       //checks if there are row, column or region conflicts
       let rowValid = solver.checkRowPlacement(puzzle, coordinate[0], coordinate[1], value)
       let colValid = solver.checkColPlacement(puzzle, coordinate[0], coordinate[1], value)

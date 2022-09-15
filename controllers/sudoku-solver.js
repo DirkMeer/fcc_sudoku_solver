@@ -15,6 +15,22 @@ class SudokuSolver {
     return 'valid'
   }
 
+  checkIdentical(puzzleString, row, column, value){
+    let sudokuArray = puzzleString.split('') //get a Ray form
+    //the base indexes for the rows
+    const rowIndexes = {'A': 0, 'B': 9, 'C': 18, 'D': 27, 'E': 36, 'F': 45, 'G': 54, 'H': 63, 'I': 72}
+    row = row.toUpperCase() //make sure we have caps to match above object
+    //console.log(puzzleString, row, column, value)
+    //get the index by adding base index of the row + the column number
+    let index = rowIndexes[row] + Number(column) -1 //-1 for zero indexing
+    //get possibilities for this row
+    if(sudokuArray[index] == value) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   checkRowPlacement(puzzleString, row, column, value) {
     let sudokuArray = puzzleString.split('') //get a Ray form
     //the base indexes for the rows
