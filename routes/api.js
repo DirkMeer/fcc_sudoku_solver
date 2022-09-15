@@ -12,8 +12,7 @@ module.exports = function (app) {
       //check for missing fields in the post request
       if(!puzzle || !coordinate || !value) {
         return res.json({ error: 'Required field(s) missing' })
-      } //split the A1 style coordinate into row and column
-      coordinate.split('')
+      } 
       //first check if the puzzle string is even a valid one
       let validation = solver.validate(puzzle)
       if(validation === 'invalid character'){
@@ -22,8 +21,10 @@ module.exports = function (app) {
         return res.json({ error: 'Expected puzzle to be 81 characters long' })
       }
       //check if the coordinates are valid//
-      let coordinateRegex = new RegExp(/[A-I][1-9]/)
+      let coordinateRegex = new RegExp(/^[A-I][1-9]$/)
       if(!coordinateRegex.test(coordinate)){ return res.json({ error: 'Invalid coordinate' })}
+      //split the A1 style coordinate into row and column
+      coordinate.split('')
       //check if the value is valid//
       let valueRegex = new RegExp(/^[1-9]$/)
       if(!valueRegex.test(value)){ return res.json({ error: 'Invalid value' })}

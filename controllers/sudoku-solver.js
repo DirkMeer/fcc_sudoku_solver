@@ -76,6 +76,9 @@ class SudokuSolver {
   solve(puzzleString) {
     let resultString = ''
     let result = solveSimpleSudoku(puzzleString)
+    if(result === undefined) {
+      return 'Puzzle cannot be solved'
+    }
     for(let i = 0; i < result.length; i++) {
       resultString += result[i]
     }
