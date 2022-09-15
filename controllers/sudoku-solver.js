@@ -20,7 +20,7 @@ class SudokuSolver {
     //the base indexes for the rows
     const rowIndexes = {'A': 0, 'B': 9, 'C': 18, 'D': 27, 'E': 36, 'F': 45, 'G': 54, 'H': 63, 'I': 72}
     row = row.toUpperCase() //make sure we have caps to match above object
-    console.log(puzzleString, row, column, value)
+    //console.log(puzzleString, row, column, value)
     //get the index by adding base index of the row + the column number
     let index = rowIndexes[row] + Number(column) -1 //-1 for zero indexing
     //get possibilities for this row
@@ -40,7 +40,7 @@ class SudokuSolver {
     //the base indexes for the rows
     const rowIndexes = {'A': 0, 'B': 9, 'C': 18, 'D': 27, 'E': 36, 'F': 45, 'G': 54, 'H': 63, 'I': 72}
     row = row.toUpperCase() //make sure we have caps to match above object
-    console.log(puzzleString, row, column, value)
+    //console.log(puzzleString, row, column, value)
     //get the index by adding base index of the row + the column number
     let index = rowIndexes[row] + Number(column) -1 //-1 for zero indexing
     //get possibilities for this row
@@ -59,7 +59,7 @@ class SudokuSolver {
     //the base indexes for the rows
     const rowIndexes = {'A': 0, 'B': 9, 'C': 18, 'D': 27, 'E': 36, 'F': 45, 'G': 54, 'H': 63, 'I': 72}
     row = row.toUpperCase() //make sure we have caps to match above object
-    console.log(puzzleString, row, column, value)
+    //console.log(puzzleString, row, column, value)
     //get the index by adding base index of the row + the column number
     let index = rowIndexes[row] + Number(column) -1 //-1 for zero indexing
     //get possibilities for this row
@@ -91,7 +91,7 @@ class SudokuSolver {
       //if any index is neither identical to the solution nor a dot in the puzzlestring
       if(puzzleRay[i] !== resultRay[i] && puzzleRay[i] !== '.'){
         //puzzle has needed mutation to solve and therefor had an invalid structure
-        return 'puzzle string invalid'
+        return 'Puzzle cannot be solved'
       }
     }
     //if loop finished without a single conflict the solution is valid and can be returned

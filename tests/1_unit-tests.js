@@ -42,7 +42,7 @@ suite('Unit Tests', () => {
     })
     test('Invalid puzzle strings fail the solver', function(){
         assert.equal(solver.solve('5..99972.3...8.5.9.9.25..8.68.47.23...95..46.7.4.....5.2.......4..8916..85.72...3'),
-        'puzzle string invalid')
+        'Puzzle cannot be solved')
     })
     test('Solver returns the expected solution for an incomplete puzzle', function(){
         assert.equal(solver.solve('82..4..6...16..89...98315.749.157.............53..4...96.415..81..7632..3...28.51'),
