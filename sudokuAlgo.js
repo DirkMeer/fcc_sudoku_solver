@@ -1,4 +1,5 @@
 var globalSudokuRay
+var solution //global variable for the solution of hard sudoku
 
 //visually represent puzzle string//
 function consoleLogSudoku(sudokuArray){
@@ -213,38 +214,13 @@ function solveSimpleSudoku(sudokuString){
     if(sudokuArray.indexOf('.') === -1){
         consoleLogSudoku(sudokuArray)
         console.log('Done!')
+        return sudokuArray
     } else {
         console.log('There is work left to do! --> continue to next step')
         globalSudokuRay = [...sudokuArray]
-        consoleLogSudoku(globalSudokuRay)
         solveSudokuV2()
+        return solution
     }
-}
-
-
-//solve advanced sudoku challenges (after all simple holes have been filled)
-function solveAdvancedSudoku(sudokuArray, makeCopy){
-    if(makeCopy === true) {
-        //first make a safe copy of the current state which is not linked and will not be edited when we change sudokuCopy
-        sudokuCopy = [...sudokuArray]
-    }
-    
-    for(var i=0; i<sudokuArray.length; i++){
-        if(sudokuArray[i] === '.'){
-            let possibilities = getPossibleValues(sudokuArray, i)
-
-            if(possibilities.length === 0){
-                solveAdvancedSudoku([...sudokuCopy])
-                return
-            }
-
-            console.log(possibilities)
-            let randomIndex = Math.floor( Math.random() * possibilities.length)
-            sudokuArray[i] = possibilities[randomIndex]
-        }
-    }
-    consoleLogSudoku(sudokuArray)
-
 }
 
 
@@ -274,8 +250,9 @@ function solveSudokuV2(){
         }
     }
     //if this code is reached it means no more dots were found and we broke out the outer loop. We did it!
-    consoleLogSudoku(globalSudokuRay)
-    return globalSudokuRay
+    console.log(globalSudokuRay)
+    solution = [...globalSudokuRay] //unpack the solution into global variable (return won't work for some reason)
+
 }
 
 
@@ -286,10 +263,12 @@ function solveSudokuV2(){
 
 //this is the slightly hard one
 // solveSimpleSudoku('.6.8.5..4..271.6......9358217.93.8....51...363..25.14...84..3.9..9.82.7..17.....8')
-//this one WAS too hard for my algorithm
-solveSimpleSudoku('.....5.1.8..9..2..914....7..2.3....9..7.4.6.8...6........58...1..6....3.4........')
-//try another hard puzzle to verify
 
+//this one WAS too hard for my algorithm
+//solveSimpleSudoku('.....5.1.8..9..2..914....7..2.3....9..7.4.6.8...6........58...1..6....3.4........')
+//try another hard puzzle to verify
+//solveSimpleSudoku('.5.9..1....21..........8.4......4....2....5.96...3.8..4......16...7.6...7.6.8...5')
+//yep works fine!
 
 
 //fcc required sudoku (they are all simple ones)
@@ -300,4 +279,4 @@ solveSimpleSudoku('.....5.1.8..9..2..914....7..2.3....9..7.4.6.8...6........58..
 // solveSimpleSudoku('82..4..6...16..89...98315.749.157.............53..4...96.415..81..7632..3...28.51')
 
 
-module.exports = solveSimpleSudoku;
+module.exports = {solveSimpleSudoku, getBoxValues, getRowValues, getColumnValues}
