@@ -1,3 +1,5 @@
+var globalSudokuRay
+
 //visually represent puzzle string//
 function consoleLogSudoku(sudokuArray){
     for(let i=0; i<sudokuArray.length; i+=9){
@@ -207,21 +209,95 @@ function solveSimpleSudoku(sudokuString){
             runOneCycle(sudokuArray)
         }
     }
+    //on success (was only a simple sudoku to solve)
+    if(sudokuArray.indexOf('.') === -1){
+        consoleLogSudoku(sudokuArray)
+        console.log('Done!')
+    } else {
+        console.log('There is work left to do! --> continue to next step')
+        globalSudokuRay = [...sudokuArray]
+        consoleLogSudoku(globalSudokuRay)
+        solveSudokuV2()
+    }
+}
+
+
+//solve advanced sudoku challenges (after all simple holes have been filled)
+function solveAdvancedSudoku(sudokuArray, makeCopy){
+    if(makeCopy === true) {
+        //first make a safe copy of the current state which is not linked and will not be edited when we change sudokuCopy
+        sudokuCopy = [...sudokuArray]
+    }
     
+    for(var i=0; i<sudokuArray.length; i++){
+        if(sudokuArray[i] === '.'){
+            let possibilities = getPossibleValues(sudokuArray, i)
+
+            if(possibilities.length === 0){
+                solveAdvancedSudoku([...sudokuCopy])
+                return
+            }
+
+            console.log(possibilities)
+            let randomIndex = Math.floor( Math.random() * possibilities.length)
+            sudokuArray[i] = possibilities[randomIndex]
+        }
+    }
     consoleLogSudoku(sudokuArray)
-    console.log('Done!')
+
+}
+
+
+function solveSudokuV2(){
+    //loop over every index of the puzzle string
+    for(var i = 0; i < globalSudokuRay.length; i++){
+        //if we find a dot
+        if(globalSudokuRay[i] === '.'){
+            //open a new loop for each number 1-9 once per index
+            //first define what is possible for this index
+            let possibilities = getPossibleValues(globalSudokuRay, i)
+            for(var j = 1; j < 10; j++) {
+                //if it is possible to put in this particular number
+                if(possibilities.indexOf(j.toString()) !== -1){
+                    //try putting it in!
+                    globalSudokuRay[i] = j.toString()
+                    //consoleLogSudoku(globalSudokuRay) (if you log it will take too long, but you can see how it works)
+                    //call solveSudokuV2() to find the next dot index to fill
+                    solveSudokuV2()
+                    //if we come back here and this code continues to run that means this j was not the solution
+                    //turn it back into a dot and allow the loop to continue for j+1 j+2 j+3 etc, trying all.
+                    globalSudokuRay[i] = '.'
+                }
+            }
+            //if none of the options 1-9 worked, there must be a wrong choice in an instance lower down the call stack
+            return //return to allow the lower instances to try their next possibilities for j
+        }
+    }
+    //if this code is reached it means no more dots were found and we broke out the outer loop. We did it!
+    consoleLogSudoku(globalSudokuRay)
+    return globalSudokuRay
 }
 
 
 //solveSimpleSudoku('..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..')
-//solveSimpleSudoku('.6.8.5..4..271.6......9358217.93.8....51...363..25.14...84..3.9..9.82.7..17.....8')
+//solveSimpleSudoku('.7.5..3.1...3.1.7.36.2785.472.8.9.1.84.61...5613..58..9..4...36.57..6.8.136.8..57')
+//solveSimpleSudoku('428.9.1..6..1.34..17.4286...468..73.859..1.4.73.2.6..998.5623175.23.7.843..984562')
+//solveSimpleSudoku('8.735..2.35.....17.2..1...9....9526.7.5.6......4...7..5...3..4....64...8642..89..')
+
+//this is the slightly hard one
+// solveSimpleSudoku('.6.8.5..4..271.6......9358217.93.8....51...363..25.14...84..3.9..9.82.7..17.....8')
+//this one WAS too hard for my algorithm
+solveSimpleSudoku('.....5.1.8..9..2..914....7..2.3....9..7.4.6.8...6........58...1..6....3.4........')
+//try another hard puzzle to verify
+
 
 
 //fcc required sudoku (they are all simple ones)
-solveSimpleSudoku('1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.')
-solveSimpleSudoku('5..91372.3...8.5.9.9.25..8.68.47.23...95..46.7.4.....5.2.......4..8916..85.72...3')
-solveSimpleSudoku('..839.7.575.....964..1.......16.29846.9.312.7..754.....62..5.78.8...3.2...492...1')
-solveSimpleSudoku('.7.89.....5....3.4.2..4..1.5689..472...6.....1.7.5.63873.1.2.8.6..47.1..2.9.387.6')
-solveSimpleSudoku('82..4..6...16..89...98315.749.157.............53..4...96.415..81..7632..3...28.51')
+// solveSimpleSudoku('1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.')
+// solveSimpleSudoku('5..91372.3...8.5.9.9.25..8.68.47.23...95..46.7.4.....5.2.......4..8916..85.72...3')
+// solveSimpleSudoku('..839.7.575.....964..1.......16.29846.9.312.7..754.....62..5.78.8...3.2...492...1')
+// solveSimpleSudoku('.7.89.....5....3.4.2..4..1.5689..472...6.....1.7.5.63873.1.2.8.6..47.1..2.9.387.6')
+// solveSimpleSudoku('82..4..6...16..89...98315.749.157.............53..4...96.415..81..7632..3...28.51')
 
 
+module.exports = solveSimpleSudoku;
